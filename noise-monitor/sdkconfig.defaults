@@ -1,0 +1,26 @@
+# Target configuration
+CONFIG_IDF_TARGET="esp32s3"
+
+# FreeRTOS 1 kHz tick rate for 1 ms scheduling resolution
+CONFIG_FREERTOS_HZ=1000
+
+# Task Watchdog Timer enabled (5 s timeout, panic on hang for recovery)
+CONFIG_ESP_TASK_WDT_EN=y
+CONFIG_ESP_TASK_WDT_INIT=y
+CONFIG_ESP_TASK_WDT_TIMEOUT_S=5
+CONFIG_ESP_TASK_WDT_PANIC=y
+
+# Enable Dynamic Frequency Scaling (DFS) power management support
+CONFIG_PM_ENABLE=y
+
+# Default CPU frequency 240 MHz on ESP32-S3
+CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_240=y
+
+# Keep tickless idle disabled by default while continuous ADC DMA is active;
+# enable CONFIG_FREERTOS_USE_TICKLESS_IDLE=y for duty-cycled low-power builds.
+CONFIG_FREERTOS_USE_TICKLESS_IDLE=n
+
+# Embedded Wi-Fi Web Dashboard defaults (phone & laptop browsers)
+CONFIG_NOISE_WEB_ENABLE=y
+CONFIG_HTTPD_MAX_REQ_HDR_LEN=1024
+CONFIG_HTTPD_MAX_URI_LEN=512

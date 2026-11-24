@@ -1,0 +1,292 @@
+menu "Noise Pollution Monitor Configuration"
+
+    menu "Microphone Input Settings"
+        choice NOISE_MIC_BACKEND
+            prompt "Microphone Sensor Type"
+            default NOISE_MIC_BACKEND_ADC
+            help
+                Select analog microphone amplifier (e.g., MAX4466) sampled via
+                ESP32-S3 12-bit ADC continuous DMA, or digital I2S microphone
+                (e.g., INMP441).
+
+            config NOISE_MIC_BACKEND_ADC
+                bool "Analog Microphone (MAX4466 via ADC Continuous DMA)"
+
+            config NOISE_MIC_BACKEND_I2S
+                bool "Digital I2S Microphone (INMP441 via I2S STD)"
+        endchoice
+
+        config NOISE_MIC_ADC_GPIO
+            int "Analog Microphone OUT GPIO (ADC1-capable)"
+            depends on NOISE_MIC_BACKEND_ADC
+            range 1 10
+            default 4
+            help
+                ESP32-S3 ADC1 GPIOs are GPIO 1 through GPIO 10. Confirm pin
+                availability on your development board before wiring.
+
+        config NOISE_MIC_I2S_BCLK_GPIO
+            int "I2S BCLK (SCK) GPIO"
+            depends on NOISE_MIC_BACKEND_I2S
+            range 0 48
+            default 11
+
+        config NOISE_MIC_I2S_WS_GPIO
+            int "I2S WS (L/R Word Select) GPIO"
+            depends on NOISE_MIC_BACKEND_I2S
+            range 0 48
+            default 12
+
+        config NOISE_MIC_I2S_DIN_GPIO
+            int "I2S DIN (SD Data) GPIO"
+            depends on NOISE_MIC_BACKEND_I2S
+            range 0 48
+            default 13
+
+        config NOISE_SAMPLE_RATE_HZ
+            int "Audio Sample Rate (Hz)"
+            range 2000 32000
+            default 8000
+            help
+                Sampling frequency for audio capture. 8000 Hz captures frequencies
+                up to 4 kHz with low CPU and memory overhead.
+
+        config NOISE_BLOCK_SAMPLES
+            int "Samples per Processing Block (N)"
+            range 64 1024
+            default 256
+            help
+                Number of samples collected before computing RMS.
+                At 8000 Hz, 256 samples equals a 32 ms analysis window.
+    endmenu
+
+    menu "OLED Display (SSD1306 I2C) Settings"
+        config NOISE_OLED_SDA_GPIO
+            int "OLED I2C SDA GPIO"
+            range 0 48
+            default 8
+
+        config NOISE_OLED_SCL_GPIO
+            int "OLED I2C SCL GPIO"
+            range 0 48
+            default 9
+
+        config NOISE_OLED_I2C_ADDR
+            hex "OLED I2C 7-bit Address"
+            range 0x3C 0x3D
+            default 0x3C
+            help
+                Most 0.96 inch SSD1306 128x64 I2C modules use 0x3C (some use 0x3D).
+
+        config NOISE_OLED_REFRESH_MS
+            int "OLED Refresh Period (ms)"
+            range 50 2000
+            default 250
+    endmenu
+
+    menu "Alarm Outputs & User Button"
+        config NOISE_GREEN_LED_GPIO
+            int "Green Status LED GPIO"
+            range 0 48
+            default 5
+
+        config NOISE_RED_LED_GPIO
+            int "Red Warning LED GPIO"
+            range 0 48
+            default 6
+
+        config NOISE_BUZZER_GPIO
+            int "Buzzer GPIO"
+            range 0 48
+            default 7
+
+        config NOISE_BUZZER_USE_PWM
+            bool "Drive Buzzer with PWM Tone (Passive Buzzer)"
+            default y
+            help
+                Enable for passive piezo buzzers (drives a square wave via LEDC).
+                Disable for active buzzers that only require a logic HIGH level.
+
+        config NOISE_BUZZER_FREQ_HZ
+            int "Passive Buzzer Tone Frequency (Hz)"
+            depends on NOISE_BUZZER_USE_PWM
+            range 500 5000
+            default 2700
+
+        config NOISE_BUTTON_GPIO
+            int "Push Button GPIO (Active-Low with Internal Pull-Up)"
+            range 0 48
+            default 10
+            help
+                Short press mutes an active alarm. When in normal state, press
+                cycles through monitoring threshold presets.
+    endmenu
+
+    menu "Noise Processing, Calibration & Thresholds"
+        config NOISE_CALIBRATED_MODE
+            bool "Enable Calibrated dB SPL Output"
+            default n
+            help
+                Enable ONLY after calibrating the microphone and amplifier gain
+                against a reference sound-level meter. When disabled, readings are
+                clearly labeled as relative noise levels (%).
+
+        config NOISE_CAL_REF_DB_X10
+            int "Calibration Reference SPL (tenths of dB, e.g. 940 = 94.0 dB)"
+            range 300 1300
+            default 940
+            help
+                Reference SPL in dB * 10 used with the reference RMS voltage below.
+
+        config NOISE_CAL_REF_RMS_MV
+            int "Calibration Reference RMS Amplitude (mV or scaled units)"
+            range 1 3300
+            default 500
+            help
+                Measured RMS amplitude corresponding to NOISE_CAL_REF_DB_X10
+                against a reference sound-level meter.
+
+        config NOISE_REL_FULL_SCALE_RMS_MV
+            int "Relative Mode 100% Full-Scale RMS (mV)"
+            range 50 1500
+            default 450
+            help
+                RMS amplitude (in mV for MAX4466 ADC) mapped to 100% relative level.
+
+        config NOISE_THRESHOLD_TRIGGER_X10
+            int "Warning Trigger Threshold (x10, e.g. 650 = 65.0)"
+            range 100 1200
+            default 650
+            help
+                Threshold above which WARNING alert activates (in % for relative
+                mode, or dB for calibrated mode).
+
+        config NOISE_THRESHOLD_RESET_X10
+            int "Warning Reset Threshold / Hysteresis (x10, e.g. 600 = 60.0)"
+            range 50 1190
+            default 600
+            help
+                Lower threshold below which WARNING clears back to NORMAL.
+                Must be less than Trigger Threshold to prevent alarm chattering.
+
+        config NOISE_EMA_ALPHA_PCT
+            int "EMA Smoothing Factor (%)"
+            range 5 100
+            default 25
+            help
+                Exponential moving average weight (5-100%). Lower values give
+                smoother readings; higher values respond faster to peaks.
+    endmenu
+
+    menu "UART Logging, Watchdog & Power Management"
+        config NOISE_LOG_INTERVAL_MS
+            int "UART Logging Period (ms)"
+            range 100 10000
+            default 500
+
+        config NOISE_LOG_CSV_FORMAT
+            bool "Output Readings in CSV Format"
+            default n
+            help
+                When enabled, outputs comma-separated telemetry lines suitable for
+                logging directly into spreadsheets or plotting tools.
+
+        config NOISE_USE_AUX_UART
+            bool "Mirror Telemetry to Auxiliary UART1"
+            default n
+            help
+                Optionally mirror UART telemetry to UART1 on dedicated TX/RX pins
+                in addition to the default ESP-IDF console.
+
+        config NOISE_AUX_UART_TX_GPIO
+            int "Auxiliary UART1 TX GPIO"
+            depends on NOISE_USE_AUX_UART
+            range 0 48
+            default 17
+
+        config NOISE_AUX_UART_RX_GPIO
+            int "Auxiliary UART1 RX GPIO"
+            depends on NOISE_USE_AUX_UART
+            range 0 48
+            default 18
+
+        config NOISE_AUX_UART_BAUD
+            int "Auxiliary UART1 Baud Rate"
+            depends on NOISE_USE_AUX_UART
+            default 115200
+
+        config NOISE_WDT_TIMEOUT_MS
+            int "Task Watchdog Timeout (ms)"
+            range 2000 30000
+            default 5000
+
+        config NOISE_ENABLE_PM
+            bool "Enable Power Management (Dynamic Frequency Scaling)"
+            default y
+            help
+                Configures ESP-IDF power management (esp_pm_configure) when
+                CONFIG_PM_ENABLE is active in sdkconfig.
+    endmenu
+
+    menu "Live Web Dashboard (Wi-Fi / Phone & Laptop)"
+        config NOISE_WEB_ENABLE
+            bool "Enable Embedded Wi-Fi Web Dashboard"
+            default y
+            help
+                Hosts a mobile- and laptop-friendly real-time line-chart web
+                dashboard directly on the ESP32-S3 over Wi-Fi.
+
+        choice NOISE_WEB_WIFI_MODE
+            prompt "Wi-Fi Mode"
+            depends on NOISE_WEB_ENABLE
+            default NOISE_WEB_WIFI_AP
+            help
+                SoftAP creates a standalone hotspot (http://192.168.4.1) so any
+                phone or laptop can connect directly with no router needed.
+                Station connects to an existing home/lab Wi-Fi network.
+
+            config NOISE_WEB_WIFI_AP
+                bool "SoftAP Hotspot (Direct Phone/Laptop -> http://192.168.4.1)"
+
+            config NOISE_WEB_WIFI_STA
+                bool "Station Mode (Join Existing Wi-Fi Router)"
+        endchoice
+
+        config NOISE_WEB_AP_SSID
+            string "SoftAP Wi-Fi SSID"
+            depends on NOISE_WEB_ENABLE && NOISE_WEB_WIFI_AP
+            default "NoiseMonitor-ESP32S3"
+
+        config NOISE_WEB_AP_PASS
+            string "SoftAP Wi-Fi Password (min 8 chars, or empty for Open)"
+            depends on NOISE_WEB_ENABLE && NOISE_WEB_WIFI_AP
+            default "noisemonitor"
+
+        config NOISE_WEB_STA_SSID
+            string "Router Wi-Fi SSID"
+            depends on NOISE_WEB_ENABLE && NOISE_WEB_WIFI_STA
+            default "MyWiFi"
+
+        config NOISE_WEB_STA_PASS
+            string "Router Wi-Fi Password"
+            depends on NOISE_WEB_ENABLE && NOISE_WEB_WIFI_STA
+            default ""
+
+        config NOISE_WEB_HTTP_PORT
+            int "HTTP Dashboard Port"
+            depends on NOISE_WEB_ENABLE
+            range 1 65535
+            default 80
+
+        config NOISE_WEB_HISTORY_INTERVAL_MS
+            int "History Ring-Buffer Sample Period (ms)"
+            depends on NOISE_WEB_ENABLE
+            range 100 5000
+            default 250
+            help
+                Interval between points appended to the in-RAM 120-point line
+                chart history buffer. 250 ms keeps the last 30 seconds ready
+                immediately when a phone or laptop opens the dashboard.
+    endmenu
+
+endmenu

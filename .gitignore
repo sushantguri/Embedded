@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Build artifacts
+build/
+*.o
+*.elf
+*.bin
+*.map
+test_host/test_noise_monitor
+noise-monitor/test_host/test_noise_monitor
+sdkconfig
+sdkconfig.old
+
+# Python
+__pycache__/
+*.pyc

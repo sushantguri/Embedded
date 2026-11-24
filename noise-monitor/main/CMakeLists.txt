@@ -1,0 +1,25 @@
+idf_component_register(
+    SRCS
+        "main.c"
+        "sensor.c"
+        "processing.c"
+        "display.c"
+        "alert.c"
+        "uart.c"
+        "freertos.c"
+        "web_dashboard.c"
+    INCLUDE_DIRS
+        "include"
+    EMBED_TXTFILES
+        "web/index.html"
+    REQUIRES
+        esp_adc
+        driver
+        esp_timer
+        esp_pm
+        nvs_flash
+        esp_wifi
+        esp_netif
+        esp_event
+        esp_http_server
+)

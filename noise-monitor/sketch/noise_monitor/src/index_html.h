@@ -1,0 +1,1924 @@
+/* Auto-generated header containing embedded web dashboard HTML */
+#ifndef INDEX_HTML_H
+#define INDEX_HTML_H
+
+static const char INDEX_HTML_STR[] = R"rawliteral(
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<title>ESP32-S3 Real-Time Noise Monitor</title>
+<style>
+:root {
+  color-scheme: dark light;
+  --bg: #0b1220;
+  --surface: #111b2e;
+  --surface-2: #17243c;
+  --border: #253656;
+  --text: #e6eefb;
+  --muted: #93a7c7;
+  --accent: #38bdf8;
+  --accent-fill: rgba(56, 189, 248, 0.16);
+  --ok: #22c55e;
+  --ok-bg: rgba(34, 197, 94, 0.14);
+  --warn: #ef4444;
+  --warn-bg: rgba(239, 68, 68, 0.16);
+  --amber: #f59e0b;
+  --amber-bg: rgba(245, 158, 11, 0.16);
+  --rms: #a78bfa;
+  --grid: rgba(148, 163, 184, 0.14);
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  --radius: 14px;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f1f5f9;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --border: #d7e0ec;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-fill: rgba(2, 132, 199, 0.14);
+  --ok: #15803d;
+  --ok-bg: rgba(21, 128, 61, 0.12);
+  --warn: #dc2626;
+  --warn-bg: rgba(220, 38, 38, 0.12);
+  --amber: #b45309;
+  --amber-bg: rgba(180, 83, 9, 0.14);
+  --rms: #7c3aed;
+  --grid: rgba(15, 23, 42, 0.09);
+  --shadow: 0 6px 18px rgba(15, 23, 42, 0.07);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --bg: #f1f5f9;
+    --surface: #ffffff;
+    --surface-2: #f8fafc;
+    --border: #d7e0ec;
+    --text: #0f172a;
+    --muted: #475569;
+    --accent: #0284c7;
+    --accent-fill: rgba(2, 132, 199, 0.14);
+    --ok: #15803d;
+    --ok-bg: rgba(21, 128, 61, 0.12);
+    --warn: #dc2626;
+    --warn-bg: rgba(220, 38, 38, 0.12);
+    --amber: #b45309;
+    --amber-bg: rgba(180, 83, 9, 0.14);
+    --rms: #7c3aed;
+    --grid: rgba(15, 23, 42, 0.09);
+    --shadow: 0 6px 18px rgba(15, 23, 42, 0.07);
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.45;
+  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  gap: 14px;
+}
+
+/* Header */
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  box-shadow: var(--shadow);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.brand-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 4px var(--ok-bg);
+  flex: none;
+}
+
+.brand-dot.warn {
+  background: var(--warn);
+  box-shadow: 0 0 0 4px var(--warn-bg);
+  animation: pulse 1.1s ease-in-out infinite;
+}
+
+.brand-dot.muted {
+  background: var(--amber);
+  box-shadow: 0 0 0 4px var(--amber-bg);
+}
+
+.brand-dot.offline {
+  background: var(--muted);
+  box-shadow: none;
+  animation: none;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.22); opacity: 0.72; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-dot.warn { animation: none; }
+}
+
+.brand h1 {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.brand-sub {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.topbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.pill.ok { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
+.pill.warn { background: var(--warn-bg); border-color: var(--warn); color: var(--warn); }
+.pill.amber { background: var(--amber-bg); border-color: var(--amber); color: var(--amber); }
+
+button, select, input {
+  font: inherit;
+  color: inherit;
+}
+
+.btn {
+  min-height: 38px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+
+.btn:hover { border-color: var(--accent); }
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #04131f; }
+.btn.danger { background: var(--warn-bg); border-color: var(--warn); color: var(--warn); }
+.btn.active { background: var(--accent-fill); border-color: var(--accent); color: var(--accent); }
+
+/* Main Grid */
+.grid-main {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 860px) {
+  .grid-main {
+    grid-template-columns: 340px 1fr;
+    align-items: start;
+  }
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  min-width: 0;
+}
+
+.card-title {
+  margin: 0 0 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Primary Readout */
+.readout-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.big-value {
+  font-size: clamp(2.5rem, 8vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.05;
+}
+
+.big-unit {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+.cal-note {
+  margin: 8px 0 12px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* Meter Bar */
+.meter-wrap {
+  position: relative;
+  height: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.meter-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--ok) 0%, var(--amber) 72%, var(--warn) 100%);
+  transition: width 0.14s linear;
+}
+
+.meter-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--text);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.meter-marker.reset {
+  background: var(--amber);
+  opacity: 0.7;
+}
+
+/* KPI Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.kpi {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 11px;
+}
+
+.kpi-label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kpi-val {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+
+/* Chart Card */
+.chart-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.seg-group {
+  display: inline-flex;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.seg-btn {
+  min-height: 32px;
+  padding: 4px 9px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.seg-btn.active {
+  background: var(--accent);
+  color: #04131f;
+}
+
+.chart-box {
+  position: relative;
+  width: 100%;
+  height: clamp(230px, 38vh, 340px);
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  touch-action: none;
+}
+
+.chart-box canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.chart-tooltip {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  pointer-events: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.chart-tooltip.show { opacity: 1; }
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* Bottom Row */
+.grid-bottom {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 860px) {
+  .grid-bottom {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.preset-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 480px) {
+  .preset-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.field label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.field input {
+  min-height: 38px;
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.control-msg {
+  min-height: 1.2em;
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* Connection Panel */
+details.conn-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  box-shadow: var(--shadow);
+}
+
+details.conn-panel summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--text);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+details.conn-panel summary::-webkit-details-marker { display: none; }
+
+.conn-body {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .conn-body {
+    grid-template-columns: 1.4fr 1fr;
+  }
+}
+
+.conn-group {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.conn-inline {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.conn-inline input {
+  flex: 1 1 180px;
+  min-height: 38px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+/* Alert Events Log */
+.events-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 196px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.event-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 9px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.event-empty {
+  color: var(--muted);
+  font-size: 0.82rem;
+  padding: 14px 4px;
+  text-align: center;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <span id="statusDot" class="brand-dot offline" aria-hidden="true"></span>
+      <div>
+        <h1>Real-Time Noise Monitor</h1>
+        <div class="brand-sub" id="deviceSubtitle">ESP32-S3 &middot; FreeRTOS &middot; Live Line Telemetry</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button id="realMicTopBtn" class="btn primary" type="button">🎙️ Use Real Mic</button>
+      <span id="sourceBadge" class="pill">Connecting...</span>
+      <span id="statusBadge" class="pill" role="status" aria-live="polite">WAITING</span>
+      <button id="pauseBtn" class="btn" type="button" aria-pressed="false">Pause</button>
+      <button id="exportBtn" class="btn" type="button">Export CSV</button>
+      <button id="themeBtn" class="btn" type="button" title="Toggle Light/Dark Theme">Theme</button>
+    </div>
+  </header>
+
+  <main class="grid-main">
+    <!-- Live Metric Card -->
+    <section class="card" aria-label="Current Noise Reading">
+      <h2 class="card-title">
+        <span>Live Noise Level</span>
+        <span id="presetChip" class="pill">DEFAULT</span>
+      </h2>
+      <div class="readout-row">
+        <div>
+          <span id="primaryVal" class="big-value">--.-</span>
+          <span id="primaryUnit" class="big-unit">% REL</span>
+        </div>
+        <button id="muteBtn" class="btn" type="button">Mute Alarm</button>
+      </div>
+      <p id="calNote" class="cal-note">Relative mode (uncalibrated). Label switches to dB SPL only after reference calibration.</p>
+
+      <div class="meter-wrap" aria-hidden="true">
+        <div id="meterFill" class="meter-fill"></div>
+        <div id="resetMarker" class="meter-marker reset" style="left:60%"></div>
+        <div id="trigMarker" class="meter-marker" style="left:65%"></div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Session Min</div>
+          <div id="kpiMin" class="kpi-val">--</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Session Avg</div>
+          <div id="kpiAvg" class="kpi-val">--</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Session Peak</div>
+          <div id="kpiPeak" class="kpi-val">--</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Smoothed RMS</div>
+          <div id="kpiRms" class="kpi-val">-- mV</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Trigger / Reset</div>
+          <div id="kpiThr" class="kpi-val">65.0 / 60.0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Pipeline Latency</div>
+          <div id="kpiLat" class="kpi-val">-- ms</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real-Time Line Graph Card -->
+    <section class="card" aria-label="Live Noise Line Chart">
+      <div class="chart-toolbar">
+        <h2 class="card-title" style="margin:0">Live Line Data</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          <div class="seg-group" role="group" aria-label="Time window">
+            <button class="seg-btn" data-win="30" type="button">30s</button>
+            <button class="seg-btn active" data-win="60" type="button">60s</button>
+            <button class="seg-btn" data-win="120" type="button">2m</button>
+            <button class="seg-btn" data-win="300" type="button">5m</button>
+          </div>
+          <button id="rmsToggleBtn" class="btn" type="button" aria-pressed="false">RMS Trace</button>
+          <button id="clearBtn" class="btn" type="button">Clear</button>
+        </div>
+      </div>
+
+      <div class="chart-box" id="chartBox">
+        <canvas id="lineChart" role="img" aria-label="Real-time line graph of measured noise level over time"></canvas>
+        <div id="chartTooltip" class="chart-tooltip" aria-hidden="true"></div>
+      </div>
+
+      <div class="legend">
+        <span class="legend-item"><i class="swatch" style="background:var(--accent)"></i>Noise Level</span>
+        <span class="legend-item"><i class="swatch" style="background:var(--warn)"></i>Trigger Threshold</span>
+        <span class="legend-item"><i class="swatch" style="background:var(--amber)"></i>Reset Hysteresis</span>
+        <span class="legend-item" id="rmsLegend" style="display:none"><i class="swatch" style="background:var(--rms)"></i>RMS Amplitude</span>
+      </div>
+    </section>
+  </main>
+
+  <section class="grid-bottom">
+    <!-- Threshold & Preset Controls -->
+    <div class="card">
+      <h2 class="card-title">
+        <span>Thresholds &amp; Presets</span>
+        <span style="font-size:0.74rem;font-weight:500">Hysteresis Alert Control</span>
+      </h2>
+      <div class="preset-row" role="group" aria-label="Environment presets">
+        <button class="btn preset-btn" data-preset="0" type="button">DEFAULT</button>
+        <button class="btn preset-btn" data-preset="1" type="button">QUIET/LIB</button>
+        <button class="btn preset-btn" data-preset="2" type="button">RESIDENT</button>
+        <button class="btn preset-btn" data-preset="3" type="button">INDUSTRIAL</button>
+      </div>
+      <form id="thrForm" class="form-row">
+        <div class="field">
+          <label for="trigInput">Trigger Limit</label>
+          <input id="trigInput" type="number" step="0.5" min="10" max="125" value="65.0" required>
+        </div>
+        <div class="field">
+          <label for="resetInput">Reset Limit</label>
+          <input id="resetInput" type="number" step="0.5" min="5" max="120" value="60.0" required>
+        </div>
+        <button class="btn primary" type="submit">Apply</button>
+      </form>
+      <p id="controlMsg" class="control-msg" role="status" aria-live="polite"></p>
+    </div>
+
+    <!-- Alert Event Log -->
+    <div class="card">
+      <h2 class="card-title">
+        <span>Alert Events</span>
+        <span id="sampleCount" style="font-size:0.76rem;font-weight:600">0 pts</span>
+      </h2>
+      <ul id="eventsList" class="events-list">
+        <li class="event-empty">No threshold alerts recorded in this session yet.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Data Source Selector -->
+  <details class="conn-panel" id="connPanel">
+    <summary>
+      <span>Data Source &amp; Device Connection (Wi-Fi / Real Mic / USB Serial / Demo)</span>
+      <span style="font-size:0.78rem;color:var(--muted)">Tap to switch</span>
+    </summary>
+    <div class="conn-body">
+      <div class="conn-group" style="border: 1px solid var(--accent); background: var(--accent-fill);">
+        <strong style="font-size:0.84rem; color: var(--accent)">🎙️ Live Microphone Acoustic Sensor (Real Audio Now)</strong>
+        <div class="conn-inline">
+          <button id="realMicBtn" class="btn primary" type="button">🎙️ Use Laptop / Phone Mic (Real Sound)</button>
+        </div>
+        <span style="font-size:0.75rem; color: var(--text)">
+          Captures genuine real-time acoustics from your device's microphone via Web Audio API. Computes real RMS amplitude, DC bias subtraction, and threshold alerts as you speak or clap!
+        </span>
+      </div>
+      <div class="conn-group">
+        <strong style="font-size:0.84rem">ESP32-S3 Wi-Fi / LAN Bridge URL</strong>
+        <div class="conn-inline">
+          <input id="apiUrlInput" type="url" placeholder="http://192.168.4.1" aria-label="ESP32-S3 HTTP Base URL">
+          <button id="connectHttpBtn" class="btn primary" type="button">Connect Wi-Fi</button>
+        </div>
+        <span style="font-size:0.75rem;color:var(--muted)">
+          Connect phone/laptop to Wi-Fi <code>NoiseMonitor-ESP32S3</code> and open <code>http://192.168.4.1</code>, or enter your ESP32 STA / bridge IP.
+        </span>
+      </div>
+      <div class="conn-group">
+        <strong style="font-size:0.84rem">Laptop Direct USB or Offline Demo</strong>
+        <div class="conn-inline">
+          <button id="serialBtn" class="btn" type="button">Connect USB Serial</button>
+          <button id="demoBtn" class="btn" type="button">Start Demo Mode</button>
+        </div>
+        <span id="connHint" style="font-size:0.75rem;color:var(--muted)">
+          USB Serial works in Chrome/Edge on laptop at 115200 baud. Demo simulates live ambient noise and loud spikes.
+        </span>
+      </div>
+    </div>
+  </details>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const PRESETS = [
+    { name: "DEFAULT", trigger: 65.0, reset: 60.0 },
+    { name: "QUIET/LIB", trigger: 45.0, reset: 40.0 },
+    { name: "RESIDENT", trigger: 65.0, reset: 60.0 },
+    { name: "INDUSTRIAL", trigger: 80.0, reset: 74.0 }
+  ];
+
+  const MAX_STORED_POINTS = 1500;
+  const state = {
+    mode: "idle", // "http" | "serial" | "demo"
+    apiBase: "",
+    paused: false,
+    showRms: false,
+    windowSec: 60,
+    points: [],      // { tMs, uptimeMs, val, rms, trig, reset, status, cal, unit, latUs, preset, muted }
+    events: [],
+    lastStatus: null,
+    latest: null,
+    pollTimer: null,
+    demoTimer: null,
+    serialPort: null,
+    serialReader: null,
+    serialReading: false,
+    audioContext: null,
+    audioSource: null,
+    audioAnalyser: null,
+    micStream: null,
+    micInterval: null,
+    hoverIdx: -1,
+    demoCfg: {
+      trigger: 65.0,
+      reset: 60.0,
+      presetIndex: 0,
+      muted: false,
+      alertLatched: false,
+      cal: false,
+      seq: 0,
+      phase: 0,
+      spikeTicks: 0,
+      rmsEma: 45.0,
+      startMs: Date.now()
+    }
+  };
+
+  const el = {
+    statusDot: document.getElementById("statusDot"),
+    deviceSubtitle: document.getElementById("deviceSubtitle"),
+    sourceBadge: document.getElementById("sourceBadge"),
+    statusBadge: document.getElementById("statusBadge"),
+    pauseBtn: document.getElementById("pauseBtn"),
+    exportBtn: document.getElementById("exportBtn"),
+    themeBtn: document.getElementById("themeBtn"),
+    presetChip: document.getElementById("presetChip"),
+    primaryVal: document.getElementById("primaryVal"),
+    primaryUnit: document.getElementById("primaryUnit"),
+    calNote: document.getElementById("calNote"),
+    muteBtn: document.getElementById("muteBtn"),
+    meterFill: document.getElementById("meterFill"),
+    trigMarker: document.getElementById("trigMarker"),
+    resetMarker: document.getElementById("resetMarker"),
+    kpiMin: document.getElementById("kpiMin"),
+    kpiAvg: document.getElementById("kpiAvg"),
+    kpiPeak: document.getElementById("kpiPeak"),
+    kpiRms: document.getElementById("kpiRms"),
+    kpiThr: document.getElementById("kpiThr"),
+    kpiLat: document.getElementById("kpiLat"),
+    chartBox: document.getElementById("chartBox"),
+    canvas: document.getElementById("lineChart"),
+    tooltip: document.getElementById("chartTooltip"),
+    rmsToggleBtn: document.getElementById("rmsToggleBtn"),
+    rmsLegend: document.getElementById("rmsLegend"),
+    clearBtn: document.getElementById("clearBtn"),
+    thrForm: document.getElementById("thrForm"),
+    trigInput: document.getElementById("trigInput"),
+    resetInput: document.getElementById("resetInput"),
+    controlMsg: document.getElementById("controlMsg"),
+    eventsList: document.getElementById("eventsList"),
+    sampleCount: document.getElementById("sampleCount"),
+    connPanel: document.getElementById("connPanel"),
+    apiUrlInput: document.getElementById("apiUrlInput"),
+    connectHttpBtn: document.getElementById("connectHttpBtn"),
+    serialBtn: document.getElementById("serialBtn"),
+    demoBtn: document.getElementById("demoBtn"),
+    realMicBtn: document.getElementById("realMicBtn"),
+    realMicTopBtn: document.getElementById("realMicTopBtn"),
+    connHint: document.getElementById("connHint")
+  };
+
+  const ctx = el.canvas.getContext("2d");
+
+  // ---- Theme ----
+  function applyTheme(theme) {
+    if (theme === "dark" || theme === "light") {
+      document.documentElement.setAttribute("data-theme", theme);
+      try { localStorage.setItem("nm_theme", theme); } catch (_) {}
+    }
+    drawChart();
+  }
+
+  try {
+    const saved = localStorage.getItem("nm_theme");
+    if (saved) document.documentElement.setAttribute("data-theme", saved);
+  } catch (_) {}
+
+  el.themeBtn.addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-theme");
+    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = cur ? cur === "dark" : prefersDark;
+    applyTheme(isDark ? "light" : "dark");
+  });
+
+  // ---- Helpers ----
+  function fmtTime(ms) {
+    const d = new Date(ms);
+    return d.toTimeString().slice(0, 8);
+  }
+
+  function cssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function setControlMsg(msg, isErr) {
+    el.controlMsg.textContent = msg;
+    el.controlMsg.style.color = isErr ? "var(--warn)" : "var(--muted)";
+  }
+
+  function stopMicAudio() {
+    if (state.micInterval) {
+      clearInterval(state.micInterval);
+      state.micInterval = null;
+    }
+    if (state.micStream) {
+      state.micStream.getTracks().forEach((t) => t.stop());
+      state.micStream = null;
+    }
+    if (state.audioContext) {
+      state.audioContext.close().catch(() => {});
+      state.audioContext = null;
+    }
+    if (el.realMicBtn) {
+      el.realMicBtn.textContent = "🎙️ Use Laptop / Phone Mic (Real Sound)";
+      el.realMicBtn.classList.remove("active");
+    }
+    if (el.realMicTopBtn) {
+      el.realMicTopBtn.textContent = "🎙️ Use Real Mic";
+      el.realMicTopBtn.classList.remove("active");
+    }
+  }
+
+  function stopAllSources() {
+    if (state.pollTimer) {
+      clearInterval(state.pollTimer);
+      state.pollTimer = null;
+    }
+    if (state.demoTimer) {
+      clearInterval(state.demoTimer);
+      state.demoTimer = null;
+    }
+    stopSerial();
+    stopMicAudio();
+    el.demoBtn.textContent = "Start Demo Mode";
+    el.demoBtn.classList.remove("active");
+  }
+
+  // ---- Telemetry Ingestion ----
+  function ingestPoint(pt, fromHistory) {
+    if (state.paused && !fromHistory) return;
+
+    state.points.push(pt);
+    if (state.points.length > MAX_STORED_POINTS) {
+      state.points.shift();
+    }
+
+    if (!fromHistory) {
+      if (state.lastStatus !== null && state.lastStatus !== pt.status) {
+        recordEvent(pt);
+      } else if (state.lastStatus === null && pt.status === "WARNING") {
+        recordEvent(pt);
+      }
+      state.lastStatus = pt.status;
+    }
+
+    state.latest = pt;
+    updateUi();
+    drawChart();
+  }
+
+  function recordEvent(pt) {
+    state.events.unshift({
+      time: fmtTime(pt.tMs),
+      status: pt.status,
+      val: pt.val,
+      unit: pt.cal ? "dB" : "%",
+      thr: pt.trig
+    });
+    if (state.events.length > 30) state.events.pop();
+    renderEvents();
+  }
+
+  function renderEvents() {
+    if (state.events.length === 0) {
+      el.eventsList.innerHTML = '<li class="event-empty">No threshold alerts recorded in this session yet.</li>';
+      return;
+    }
+    el.eventsList.innerHTML = "";
+    for (const ev of state.events) {
+      const li = document.createElement("li");
+      li.className = "event-item";
+
+      const left = document.createElement("span");
+      const badge = document.createElement("span");
+      badge.className = "pill " + (ev.status === "WARNING" ? "warn" : ev.status === "MUTED" ? "amber" : "ok");
+      badge.textContent = ev.status;
+      badge.style.marginRight = "8px";
+
+      const detail = document.createElement("span");
+      detail.textContent = ev.val.toFixed(1) + " " + ev.unit + " (thr " + ev.thr.toFixed(1) + ")";
+      left.appendChild(badge);
+      left.appendChild(detail);
+
+      const ts = document.createElement("span");
+      ts.style.color = "var(--muted)";
+      ts.textContent = ev.time;
+
+      li.appendChild(left);
+      li.appendChild(ts);
+      el.eventsList.appendChild(li);
+    }
+  }
+
+  function updateUi() {
+    const p = state.latest;
+    if (!p) return;
+
+    const unitText = p.cal ? "dB SPL" : "% REL";
+    el.primaryVal.textContent = p.val.toFixed(1);
+    el.primaryUnit.textContent = unitText;
+    el.calNote.textContent = p.cal
+      ? "Calibrated dB SPL mode active (verify periodically against a reference sound-level meter)."
+      : "Relative mode (uncalibrated). Label switches to dB SPL only after reference calibration.";
+
+    el.presetChip.textContent = p.preset || "CUSTOM";
+
+    // Status indicators
+    el.statusBadge.textContent = p.status;
+    el.statusBadge.className = "pill " + (p.status === "WARNING" ? "warn" : p.status === "MUTED" ? "amber" : "ok");
+    el.statusDot.className = "brand-dot" + (p.status === "WARNING" ? " warn" : p.status === "MUTED" ? " muted" : "");
+
+    el.muteBtn.textContent = p.muted ? "Unmute Alarm" : "Mute Alarm";
+    el.muteBtn.className = p.muted ? "btn active" : (p.status === "WARNING" ? "btn danger" : "btn");
+
+    // Meter scale: 0..100 for REL, 20..120 for calibrated dB
+    const minS = p.cal ? 20 : 0;
+    const maxS = p.cal ? 120 : 100;
+    const clampPct = (v) => Math.max(0, Math.min(100, ((v - minS) / (maxS - minS)) * 100));
+    el.meterFill.style.width = clampPct(p.val).toFixed(1) + "%";
+    el.trigMarker.style.left = clampPct(p.trig).toFixed(1) + "%";
+    el.resetMarker.style.left = clampPct(p.reset).toFixed(1) + "%";
+
+    // Session stats over visible points
+    const pts = getVisiblePoints();
+    if (pts.length > 0) {
+      let mn = Infinity, mx = -Infinity, sum = 0;
+      for (const q of pts) {
+        if (q.val < mn) mn = q.val;
+        if (q.val > mx) mx = q.val;
+        sum += q.val;
+      }
+      const shortU = p.cal ? " dB" : "%";
+      el.kpiMin.textContent = mn.toFixed(1) + shortU;
+      el.kpiAvg.textContent = (sum / pts.length).toFixed(1) + shortU;
+      el.kpiPeak.textContent = mx.toFixed(1) + shortU;
+    }
+
+    el.kpiRms.textContent = p.rms.toFixed(1) + " " + (p.rmsUnit || "mV");
+    el.kpiThr.textContent = p.trig.toFixed(1) + " / " + p.reset.toFixed(1);
+    el.kpiLat.textContent = (p.latUs / 1000).toFixed(2) + " ms";
+    el.sampleCount.textContent = state.points.length + " pts";
+
+    // Highlight active preset button
+    document.querySelectorAll(".preset-btn").forEach((btn) => {
+      const idx = Number(btn.dataset.preset);
+      const isMatch = PRESETS[idx] && PRESETS[idx].name === p.preset;
+      btn.classList.toggle("active", isMatch);
+    });
+  }
+
+  function getVisiblePoints() {
+    if (state.points.length === 0) return [];
+    const latestT = state.points[state.points.length - 1].tMs;
+    const cutoff = latestT - state.windowSec * 1000;
+    let start = 0;
+    while (start < state.points.length && state.points[start].tMs < cutoff) {
+      start++;
+    }
+    return state.points.slice(start);
+  }
+
+  // ---- High-DPI Canvas Line Chart ----
+  function resizeCanvas() {
+    const rect = el.chartBox.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(1, Math.floor(rect.width * dpr));
+    const h = Math.max(1, Math.floor(rect.height * dpr));
+    if (el.canvas.width !== w || el.canvas.height !== h) {
+      el.canvas.width = w;
+      el.canvas.height = h;
+    }
+    drawChart();
+  }
+
+  if (typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(resizeCanvas).observe(el.chartBox);
+  } else {
+    window.addEventListener("resize", resizeCanvas);
+  }
+
+  function drawChart() {
+    const w = el.canvas.width;
+    const h = el.canvas.height;
+    if (!w || !h) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    ctx.save();
+    ctx.scale(dpr, dpr);
+
+    const cw = w / dpr;
+    const ch = h / dpr;
+    ctx.clearRect(0, 0, cw, ch);
+
+    const padL = 44;
+    const padR = state.showRms ? 46 : 14;
+    const padT = 16;
+    const padB = 28;
+    const plotW = Math.max(10, cw - padL - padR);
+    const plotH = Math.max(10, ch - padT - padB);
+
+    const pts = getVisiblePoints();
+    const cal = state.latest ? state.latest.cal : false;
+    const yMin = cal ? 20 : 0;
+    const yMax = cal ? 120 : 100;
+
+    const gridColor = cssVar("--grid");
+    const mutedColor = cssVar("--muted");
+    const accentColor = cssVar("--accent");
+    const warnColor = cssVar("--warn");
+    const amberColor = cssVar("--amber");
+    const rmsColor = cssVar("--rms");
+
+    const yToPx = (v) => {
+      const clamped = Math.max(yMin, Math.min(yMax, v));
+      return padT + plotH * (1 - (clamped - yMin) / (yMax - yMin));
+    };
+
+    // Horizontal gridlines & Y labels
+    ctx.font = "11px -apple-system, BlinkMacSystemFont, sans-serif";
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    const steps = 5;
+    for (let i = 0; i <= steps; i++) {
+      const val = yMin + ((yMax - yMin) * i) / steps;
+      const y = yToPx(val);
+      ctx.strokeStyle = gridColor;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(padL, y);
+      ctx.lineTo(padL + plotW, y);
+      ctx.stroke();
+
+      ctx.fillStyle = mutedColor;
+      ctx.fillText(val.toFixed(0) + (cal ? "" : "%"), padL - 6, y);
+    }
+
+    // Threshold lines
+    const trig = state.latest ? state.latest.trig : 65;
+    const reset = state.latest ? state.latest.reset : 60;
+
+    // Trigger dashed line
+    const yTrig = yToPx(trig);
+    ctx.save();
+    ctx.setLineDash([6, 4]);
+    ctx.strokeStyle = warnColor;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(padL, yTrig);
+    ctx.lineTo(padL + plotW, yTrig);
+    ctx.stroke();
+    ctx.fillStyle = warnColor;
+    ctx.textAlign = "left";
+    ctx.fillText("TRIG " + trig.toFixed(0), padL + 6, Math.max(padT + 8, yTrig - 8));
+
+    // Reset hysteresis dashed line
+    const yReset = yToPx(reset);
+    ctx.strokeStyle = amberColor;
+    ctx.lineWidth = 1.1;
+    ctx.beginPath();
+    ctx.moveTo(padL, yReset);
+    ctx.lineTo(padL + plotW, yReset);
+    ctx.stroke();
+    ctx.restore();
+
+    if (pts.length === 0) {
+      ctx.fillStyle = mutedColor;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = "13px -apple-system, BlinkMacSystemFont, sans-serif";
+      ctx.fillText("Waiting for live samples...", padL + plotW / 2, padT + plotH / 2);
+      ctx.restore();
+      return;
+    }
+
+    const endT = pts[pts.length - 1].tMs;
+    const startT = endT - state.windowSec * 1000;
+    const xToPx = (tMs) => padL + plotW * Math.max(0, Math.min(1, (tMs - startT) / (state.windowSec * 1000)));
+
+    // Vertical time ticks
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillStyle = mutedColor;
+    const xTicks = 4;
+    for (let i = 0; i <= xTicks; i++) {
+      const frac = i / xTicks;
+      const x = padL + plotW * frac;
+      const secAgo = Math.round(state.windowSec * (1 - frac));
+      ctx.strokeStyle = gridColor;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x, padT);
+      ctx.lineTo(x, padT + plotH);
+      ctx.stroke();
+      ctx.fillText(secAgo === 0 ? "now" : "-" + secAgo + "s", x, padT + plotH + 8);
+    }
+
+    // Optional RMS secondary trace
+    if (state.showRms) {
+      let maxRms = 100;
+      for (const q of pts) if (q.rms > maxRms) maxRms = q.rms;
+      maxRms = Math.ceil(maxRms / 50) * 50;
+      const rmsToPx = (r) => padT + plotH * (1 - Math.max(0, Math.min(maxRms, r)) / maxRms);
+
+      ctx.save();
+      ctx.strokeStyle = rmsColor;
+      ctx.lineWidth = 1.4;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      pts.forEach((q, idx) => {
+        const x = xToPx(q.tMs);
+        const y = rmsToPx(q.rms);
+        if (idx === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+      ctx.restore();
+
+      // Right axis labels for RMS
+      ctx.fillStyle = rmsColor;
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+      ctx.fillText(maxRms + "mV", padL + plotW + 5, padT + 4);
+      ctx.fillText((maxRms / 2).toFixed(0), padL + plotW + 5, padT + plotH / 2);
+      ctx.fillText("0", padL + plotW + 5, padT + plotH - 4);
+    }
+
+    // Area fill under primary line
+    const grad = ctx.createLinearGradient(0, padT, 0, padT + plotH);
+    const isWarnNow = state.latest && state.latest.status === "WARNING";
+    grad.addColorStop(0, isWarnNow ? "rgba(239, 68, 68, 0.30)" : cssVar("--accent-fill"));
+    grad.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+    ctx.beginPath();
+    pts.forEach((q, idx) => {
+      const x = xToPx(q.tMs);
+      const y = yToPx(q.val);
+      if (idx === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.lineTo(xToPx(pts[pts.length - 1].tMs), padT + plotH);
+    ctx.lineTo(xToPx(pts[0].tMs), padT + plotH);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Primary line stroke (color-coded per segment when crossing threshold)
+    ctx.lineWidth = 2.4;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    for (let i = 1; i < pts.length; i++) {
+      const a = pts[i - 1];
+      const b = pts[i];
+      ctx.strokeStyle = b.status === "WARNING" ? warnColor : (b.status === "MUTED" ? amberColor : accentColor);
+      ctx.beginPath();
+      ctx.moveTo(xToPx(a.tMs), yToPx(a.val));
+      ctx.lineTo(xToPx(b.tMs), yToPx(b.val));
+      ctx.stroke();
+    }
+
+    // Live head dot
+    const head = pts[pts.length - 1];
+    const hx = xToPx(head.tMs);
+    const hy = yToPx(head.val);
+    ctx.beginPath();
+    ctx.arc(hx, hy, 4, 0, Math.PI * 2);
+    ctx.fillStyle = head.status === "WARNING" ? warnColor : accentColor;
+    ctx.fill();
+
+    // Hover / touch crosshair
+    if (state.hoverIdx >= 0 && state.hoverIdx < pts.length) {
+      const hp = pts[state.hoverIdx];
+      const cx = xToPx(hp.tMs);
+      const cy = yToPx(hp.val);
+      ctx.save();
+      ctx.strokeStyle = mutedColor;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.moveTo(cx, padT);
+      ctx.lineTo(cx, padT + plotH);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+      ctx.fillStyle = cssVar("--text");
+      ctx.fill();
+    }
+
+    ctx.restore();
+  }
+
+  // Interactive mouse & touch scrub on chart
+  function handlePointer(clientX) {
+    const pts = getVisiblePoints();
+    if (pts.length === 0) return;
+    const rect = el.chartBox.getBoundingClientRect();
+    const padL = 44;
+    const padR = state.showRms ? 46 : 14;
+    const plotW = Math.max(10, rect.width - padL - padR);
+    const relX = Math.max(0, Math.min(1, (clientX - rect.left - padL) / plotW));
+    const endT = pts[pts.length - 1].tMs;
+    const targetT = endT - state.windowSec * 1000 * (1 - relX);
+
+    let best = 0, bestDiff = Infinity;
+    for (let i = 0; i < pts.length; i++) {
+      const d = Math.abs(pts[i].tMs - targetT);
+      if (d < bestDiff) { bestDiff = d; best = i; }
+    }
+    state.hoverIdx = best;
+    const p = pts[best];
+    el.tooltip.innerHTML =
+      `<strong>${p.val.toFixed(1)} ${p.cal ? "dB" : "% REL"}</strong> &middot; ${p.status}<br>` +
+      `RMS: ${p.rms.toFixed(1)} ${p.rmsUnit || "mV"} &middot; ${fmtTime(p.tMs)}`;
+    el.tooltip.classList.add("show");
+    drawChart();
+  }
+
+  function clearPointer() {
+    state.hoverIdx = -1;
+    el.tooltip.classList.remove("show");
+    drawChart();
+  }
+
+  el.chartBox.addEventListener("pointermove", (e) => handlePointer(e.clientX));
+  el.chartBox.addEventListener("pointerdown", (e) => handlePointer(e.clientX));
+  el.chartBox.addEventListener("pointerleave", clearPointer);
+  el.chartBox.addEventListener("pointercancel", clearPointer);
+
+  // ---- HTTP Wi-Fi / LAN Bridge Source ----
+  function mapApiRecord(d, nowMs) {
+    return {
+      tMs: nowMs,
+      uptimeMs: Number(d.uptime_ms || 0),
+      val: Number(d.primary_value ?? d.relative_pct ?? 0),
+      rms: Number(d.rms_smoothed ?? d.rms_raw ?? 0),
+      rmsUnit: d.is_millivolts === false ? "cnt" : "mV",
+      trig: Number(d.threshold_trigger ?? 65),
+      reset: Number(d.threshold_reset ?? 60),
+      status: String(d.status || "NORMAL"),
+      cal: Boolean(d.is_calibrated),
+      latUs: Number(d.latency_us || 0),
+      preset: String(d.preset_name || "CUSTOM"),
+      muted: Boolean(d.muted)
+    };
+  }
+
+  async function startHttpMode(baseUrl) {
+    stopAllSources();
+    state.mode = "http";
+    state.apiBase = (baseUrl || "").replace(/\/+$/, "");
+    el.sourceBadge.textContent = state.apiBase ? ("HTTP " + state.apiBase.replace(/^https?:\/\//, "")) : "ESP32-S3 Wi-Fi";
+    el.sourceBadge.className = "pill";
+
+    // Fetch existing ring-buffer history first so chart populates immediately
+    try {
+      const hr = await fetch(state.apiBase + "/api/history", { cache: "no-store" });
+      if (hr.ok) {
+        const hdata = await hr.json();
+        const arr = Array.isArray(hdata.points) ? hdata.points : [];
+        if (arr.length > 0) {
+          state.points = [];
+          const now = Date.now();
+          const lastUp = Number(arr[arr.length - 1][0] || 0);
+          for (const row of arr) {
+            const up = Number(row[0] || 0);
+            const tMs = now - Math.max(0, lastUp - up);
+            const stCode = Number(row[4] || 0);
+            const stStr = stCode === 1 ? "WARNING" : (stCode === 2 ? "MUTED" : "NORMAL");
+            ingestPoint({
+              tMs,
+              uptimeMs: up,
+              val: Number(row[1] || 0),
+              rms: Number(row[2] || 0),
+              rmsUnit: hdata.is_millivolts === false ? "cnt" : "mV",
+              trig: Number(row[3] || 65),
+              reset: Number(hdata.threshold_reset ?? 60),
+              status: stStr,
+              cal: Boolean(hdata.is_calibrated),
+              latUs: 0,
+              preset: String(hdata.preset_name || "DEFAULT"),
+              muted: stCode === 2
+            }, true);
+          }
+        }
+      }
+    } catch (_) {
+      // History endpoint optional
+    }
+
+    let failCount = 0;
+    const poll = async () => {
+      try {
+        const res = await fetch(state.apiBase + "/api/live", { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        failCount = 0;
+        el.sourceBadge.className = "pill ok";
+        if (data.source) {
+          el.sourceBadge.textContent = data.source;
+        } else {
+          el.sourceBadge.textContent = state.apiBase ? "Wi-Fi Live" : "ESP32-S3 Live";
+        }
+        if (data.ip) {
+          el.deviceSubtitle.textContent = "ESP32-S3 · " + data.ip + " · FreeRTOS Live Telemetry";
+        }
+        const pt = mapApiRecord(data, Date.now());
+        if (document.activeElement !== el.trigInput && document.activeElement !== el.resetInput) {
+          el.trigInput.value = pt.trig.toFixed(1);
+          el.resetInput.value = pt.reset.toFixed(1);
+        }
+        ingestPoint(pt, false);
+      } catch (err) {
+        failCount++;
+        if (failCount >= 3) {
+          el.sourceBadge.textContent = "Reconnecting...";
+          el.sourceBadge.className = "pill warn";
+          el.statusDot.className = "brand-dot offline";
+        }
+      }
+    };
+
+    await poll();
+    state.pollTimer = setInterval(poll, 250);
+  }
+
+  // ---- Web Serial API (Direct Laptop USB UART) ----
+  async function stopSerial() {
+    state.serialReading = false;
+    try {
+      if (state.serialReader) {
+        await state.serialReader.cancel();
+        state.serialReader.releaseLock();
+      }
+    } catch (_) {}
+    try {
+      if (state.serialPort) await state.serialPort.close();
+    } catch (_) {}
+    state.serialReader = null;
+    state.serialPort = null;
+    el.serialBtn.textContent = "Connect USB Serial";
+    el.serialBtn.classList.remove("active");
+  }
+
+  function parseUartLine(line) {
+    const s = line.trim();
+    if (!s || s.startsWith("uptime_ms,")) return null;
+
+    // 1. CSV format: uptime_ms,seq,rms_raw,rms_smooth,relative_pct,est_db,calibrated,threshold_trigger,status,latency_us
+    if (/^\d+,\d+,/.test(s)) {
+      const parts = s.split(",");
+      if (parts.length >= 10) {
+        const cal = parts[6] === "1";
+        const trig = parseFloat(parts[7]);
+        return {
+          tMs: Date.now(),
+          uptimeMs: Number(parts[0]),
+          val: parseFloat(cal ? parts[5] : parts[4]),
+          rms: parseFloat(parts[3]),
+          rmsUnit: "mV",
+          trig: Number.isFinite(trig) ? trig : 65.0,
+          reset: Number.isFinite(trig) ? Math.max(0, trig - 5.0) : 60.0,
+          status: parts[8].trim(),
+          cal,
+          latUs: Number(parts[9]) || 0,
+          preset: "UART",
+          muted: parts[8].trim() === "MUTED"
+        };
+      }
+    }
+
+    // 2. Human-readable logger format:
+    // [00:00:12.345] #42 | Level:  68.4% (REL) | RMS:  142.3 mV | Thr: 65.0 (DEFAULT) | Status: WARNING | Lat: 1.20 ms
+    const m = s.match(/\|\s*(Noise|Level):\s*([\d.]+)\s*(dB|%)\s*(?:\(REL\))?\s*\|\s*RMS:\s*([\d.]+)\s*(\w+)\s*\|\s*Thr:\s*([\d.]+)\s*\(([^)]+)\)\s*\|\s*Status:\s*(\w+)\s*\|\s*Lat:\s*([\d.]+)/);
+    if (m) {
+      const cal = m[1] === "Noise";
+      const trig = parseFloat(m[6]);
+      return {
+        tMs: Date.now(),
+        uptimeMs: Date.now(),
+        val: parseFloat(m[2]),
+        rms: parseFloat(m[4]),
+        rmsUnit: m[5],
+        trig,
+        reset: Math.max(0, trig - 5.0),
+        status: m[8],
+        cal,
+        latUs: Math.round(parseFloat(m[9]) * 1000),
+        preset: m[7],
+        muted: m[8] === "MUTED"
+      };
+    }
+    return null;
+  }
+
+  async function startSerialMode() {
+    if (!("serial" in navigator)) {
+      setControlMsg("Web Serial requires Chrome or Edge on a laptop (not available on phone browsers).", true);
+      return;
+    }
+    if (state.mode === "serial") {
+      await stopSerial();
+      state.mode = "idle";
+      el.sourceBadge.textContent = "Disconnected";
+      el.sourceBadge.className = "pill";
+      return;
+    }
+
+    stopAllSources();
+    try {
+      const port = await navigator.serial.requestPort();
+      await port.open({ baudRate: 115200 });
+      state.serialPort = port;
+      state.mode = "serial";
+      state.serialReading = true;
+      el.serialBtn.textContent = "Disconnect USB";
+      el.serialBtn.classList.add("active");
+      el.sourceBadge.textContent = "USB Serial 115200";
+      el.sourceBadge.className = "pill ok";
+      setControlMsg("Streaming live UART telemetry from ESP32-S3 over USB.", false);
+
+      const decoder = new TextDecoderStream();
+      port.readable.pipeTo(decoder.writable).catch(() => {});
+      const reader = decoder.readable.getReader();
+      state.serialReader = reader;
+
+      let buf = "";
+      while (state.serialReading) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        if (value) {
+          buf += value;
+          const lines = buf.split(/\r?\n/);
+          buf = lines.pop() || "";
+          for (const line of lines) {
+            const pt = parseUartLine(line);
+            if (pt) ingestPoint(pt, false);
+          }
+        }
+      }
+    } catch (err) {
+      await stopSerial();
+      setControlMsg("USB Serial closed or cancelled: " + err.message, true);
+    }
+  }
+
+  // ---- Real Acoustic Microphone (Web Audio API) ----
+  async function startMicAudio() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setControlMsg("Microphone access is not supported on this browser or requires localhost / HTTPS.", true);
+      return;
+    }
+    if (state.mode === "mic") {
+      stopAllSources();
+      state.mode = "idle";
+      el.sourceBadge.textContent = "Idle";
+      el.sourceBadge.className = "pill";
+      setControlMsg("Real microphone stopped.", false);
+      return;
+    }
+
+    stopAllSources();
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+      state.micStream = stream;
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      const actx = new AudioCtx();
+      state.audioContext = actx;
+      const sourceNode = actx.createMediaStreamSource(stream);
+      const analyser = actx.createAnalyser();
+      analyser.fftSize = 512;
+      sourceNode.connect(analyser);
+      state.audioAnalyser = analyser;
+
+      state.mode = "mic";
+      el.sourceBadge.textContent = "🎙️ Real Mic Live";
+      el.sourceBadge.className = "pill ok";
+      if (el.realMicBtn) {
+        el.realMicBtn.textContent = "Stop Real Mic";
+        el.realMicBtn.classList.add("active");
+      }
+      if (el.realMicTopBtn) {
+        el.realMicTopBtn.textContent = "Stop Real Mic";
+        el.realMicTopBtn.classList.add("active");
+      }
+      el.deviceSubtitle.textContent = "Live Acoustic Sampling · Real Audio Input · 10 Hz RMS";
+      setControlMsg("Listening to REAL acoustic sound! Speak, clap, or make noise to see real-time spikes.", false);
+
+      const timeData = new Float32Array(analyser.fftSize);
+      let micEma = 0.0;
+      let seq = 0;
+      const startMs = Date.now();
+      let alertLatched = false;
+
+      state.micInterval = setInterval(() => {
+        if (state.paused) return;
+        analyser.getFloatTimeDomainData(timeData);
+
+        // 1. Remove DC offset
+        let sum = 0.0;
+        for (let i = 0; i < timeData.length; i++) {
+          sum += timeData[i];
+        }
+        const dc = sum / timeData.length;
+
+        // 2. Compute RMS: sqrt((1/N) * sum(x_i^2))
+        let sumSq = 0.0;
+        for (let i = 0; i < timeData.length; i++) {
+          const diff = timeData[i] - dc;
+          sumSq += diff * diff;
+        }
+        const rawRms = Math.sqrt(sumSq / timeData.length);
+
+        // Scale normalized float amplitude (0..1) to equivalent mV
+        const rmsMv = Math.min(600.0, rawRms * 1200.0);
+
+        // Exponential Moving Average smoothing (alpha = 0.25, matches noise_calculation.c)
+        micEma = micEma === 0.0 ? rmsMv : (0.25 * rmsMv + 0.75 * micEma);
+
+        // 40 dB dynamic range mapping (same formula as noise_calculation.c)
+        const fullScaleMv = 350.0;
+        const ratio = Math.max(0.01, Math.min(1.0, micEma / fullScaleMv));
+        const relPct = Math.max(0.0, Math.min(100.0, ((20.0 * Math.log10(ratio) + 40.0) / 40.0) * 100.0));
+
+        const trig = state.demoCfg.trigger;
+        const rst = state.demoCfg.reset;
+
+        // Hysteresis comparison
+        if (!alertLatched) {
+          if (relPct >= trig) alertLatched = true;
+        } else {
+          if (relPct <= rst) {
+            alertLatched = false;
+            state.demoCfg.muted = false;
+          }
+        }
+
+        const muted = state.demoCfg.muted;
+        const status = alertLatched ? (muted ? "MUTED" : "WARNING") : "NORMAL";
+        seq++;
+
+        ingestPoint({
+          tMs: Date.now(),
+          uptimeMs: Date.now() - startMs,
+          val: relPct,
+          rms: micEma,
+          rmsUnit: "mV",
+          trig: trig,
+          reset: rst,
+          status: status,
+          cal: false,
+          latUs: 120,
+          preset: PRESETS[state.demoCfg.presetIndex] ? PRESETS[state.demoCfg.presetIndex].name : "REAL MIC",
+          muted: muted
+        }, false);
+      }, 100);
+    } catch (err) {
+      stopMicAudio();
+      setControlMsg("Microphone error: " + err.message, true);
+    }
+  }
+
+  // ---- Built-in Demo / Simulator ----
+  function startDemoMode() {
+    stopAllSources();
+    state.mode = "demo";
+    el.sourceBadge.textContent = "Demo Simulator";
+    el.sourceBadge.className = "pill amber";
+    el.demoBtn.textContent = "Demo Running";
+    el.demoBtn.classList.add("active");
+    setControlMsg("Demo mode active — simulating MAX4466 ambient sound + periodic loud events.", false);
+
+    const tick = () => {
+      const d = state.demoCfg;
+      d.seq++;
+      d.phase += 0.16;
+
+      // Occasional realistic noise spike (traffic horn / clapping)
+      if (d.spikeTicks > 0) {
+        d.spikeTicks--;
+      } else if (Math.random() < 0.045) {
+        d.spikeTicks = 8 + Math.floor(Math.random() * 12);
+      }
+
+      const baseRms = 42 + 16 * Math.sin(d.phase) + 9 * Math.sin(d.phase * 2.7) + (Math.random() - 0.5) * 14;
+      const spikeRms = d.spikeTicks > 0 ? (115 + Math.random() * 140) : 0;
+      const rmsRaw = Math.max(4, baseRms + spikeRms);
+      d.rmsEma = 0.25 * rmsRaw + 0.75 * d.rmsEma;
+
+      // Same logarithmic relative mapping as noise_calculation.c
+      const ratio = Math.max(0.01, Math.min(1.0, d.rmsEma / 450.0));
+      const relPct = ((20 * Math.log10(ratio) + 40) / 40) * 100;
+
+      // Same hysteresis state machine as noise_calculation.c
+      if (!d.alertLatched) {
+        if (relPct >= d.trigger) d.alertLatched = true;
+      } else {
+        if (relPct <= d.reset) {
+          d.alertLatched = false;
+          d.muted = false;
+        }
+      }
+
+      const status = d.alertLatched ? (d.muted ? "MUTED" : "WARNING") : "NORMAL";
+      const presetName = PRESETS[d.presetIndex] ? PRESETS[d.presetIndex].name : "CUSTOM";
+
+      ingestPoint({
+        tMs: Date.now(),
+        uptimeMs: Date.now() - d.startMs,
+        val: relPct,
+        rms: d.rmsEma,
+        rmsUnit: "mV",
+        trig: d.trigger,
+        reset: d.reset,
+        status,
+        cal: d.cal,
+        latUs: 420 + Math.floor(Math.random() * 240),
+        preset: presetName,
+        muted: d.muted
+      }, false);
+    };
+
+    tick();
+    state.demoTimer = setInterval(tick, 250);
+  }
+
+  // ---- Control Dispatch (ESP32-S3 / Bridge / Demo) ----
+  async function sendControl(payload, okText) {
+    if (state.mode === "demo") {
+      const d = state.demoCfg;
+      if (typeof payload.mute === "boolean") d.muted = payload.mute;
+      if (typeof payload.preset === "number" && PRESETS[payload.preset]) {
+        d.presetIndex = payload.preset;
+        d.trigger = PRESETS[payload.preset].trigger;
+        d.reset = PRESETS[payload.preset].reset;
+        el.trigInput.value = d.trigger.toFixed(1);
+        el.resetInput.value = d.reset.toFixed(1);
+      }
+      if (typeof payload.trigger === "number" && typeof payload.reset === "number") {
+        d.presetIndex = 99;
+        d.trigger = payload.trigger;
+        d.reset = payload.reset;
+      }
+      setControlMsg(okText + " (demo)", false);
+      return;
+    }
+
+    if (state.mode !== "http") {
+      setControlMsg("Remote controls require Wi-Fi / HTTP mode (USB Serial is read-only telemetry).", true);
+      return;
+    }
+
+    try {
+      const res = await fetch(state.apiBase + "/api/control", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      setControlMsg(okText, false);
+    } catch (err) {
+      setControlMsg("Control request failed: " + err.message, true);
+    }
+  }
+
+  // ---- Event Listeners ----
+  el.pauseBtn.addEventListener("click", () => {
+    state.paused = !state.paused;
+    el.pauseBtn.textContent = state.paused ? "Resume" : "Pause";
+    el.pauseBtn.setAttribute("aria-pressed", String(state.paused));
+    el.pauseBtn.classList.toggle("active", state.paused);
+  });
+
+  el.rmsToggleBtn.addEventListener("click", () => {
+    state.showRms = !state.showRms;
+    el.rmsToggleBtn.setAttribute("aria-pressed", String(state.showRms));
+    el.rmsToggleBtn.classList.toggle("active", state.showRms);
+    el.rmsLegend.style.display = state.showRms ? "inline-flex" : "none";
+    drawChart();
+  });
+
+  el.clearBtn.addEventListener("click", () => {
+    state.points = [];
+    state.events = [];
+    renderEvents();
+    drawChart();
+  });
+
+  document.querySelectorAll(".seg-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".seg-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      state.windowSec = Number(btn.dataset.win) || 60;
+      drawChart();
+    });
+  });
+
+  el.muteBtn.addEventListener("click", () => {
+    const nextMute = !(state.latest && state.latest.muted);
+    sendControl({ mute: nextMute }, nextMute ? "Alarm muted." : "Alarm unmuted.");
+  });
+
+  document.querySelectorAll(".preset-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const idx = Number(btn.dataset.preset);
+      const pr = PRESETS[idx];
+      if (!pr) return;
+      el.trigInput.value = pr.trigger.toFixed(1);
+      el.resetInput.value = pr.reset.toFixed(1);
+      sendControl({ preset: idx }, "Switched preset to " + pr.name + ".");
+    });
+  });
+
+  el.thrForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const trig = parseFloat(el.trigInput.value);
+    const reset = parseFloat(el.resetInput.value);
+    if (!Number.isFinite(trig) || !Number.isFinite(reset)) {
+      setControlMsg("Enter valid numeric thresholds.", true);
+      return;
+    }
+    if (reset >= trig) {
+      setControlMsg("Reset threshold must be strictly lower than Trigger threshold (hysteresis).", true);
+      return;
+    }
+    sendControl({ trigger: trig, reset }, "Updated thresholds to " + trig.toFixed(1) + " / " + reset.toFixed(1) + ".");
+  });
+
+  el.exportBtn.addEventListener("click", () => {
+    if (state.points.length === 0) {
+      setControlMsg("No readings collected to export yet.", true);
+      return;
+    }
+    const rows = ["timestamp,uptime_ms,primary_value,unit,rms_smoothed,threshold_trigger,threshold_reset,status,latency_us"];
+    for (const p of state.points) {
+      rows.push([
+        new Date(p.tMs).toISOString(),
+        p.uptimeMs,
+        p.val.toFixed(2),
+        p.cal ? "dB" : "REL_PCT",
+        p.rms.toFixed(2),
+        p.trig.toFixed(1),
+        p.reset.toFixed(1),
+        p.status,
+        p.latUs
+      ].join(","));
+    }
+    const blob = new Blob([rows.join("\n") + "\n"], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "noise-monitor-" + new Date().toISOString().replace(/[:.]/g, "-") + ".csv";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setControlMsg("Exported " + state.points.length + " readings to CSV.", false);
+  });
+
+  el.connectHttpBtn.addEventListener("click", () => {
+    const val = el.apiUrlInput.value.trim();
+    if (!val) {
+      startHttpMode("");
+      return;
+    }
+    const normalized = /^https?:\/\//i.test(val) ? val : ("http://" + val);
+    el.apiUrlInput.value = normalized;
+    startHttpMode(normalized);
+  });
+
+  el.serialBtn.addEventListener("click", startSerialMode);
+  el.demoBtn.addEventListener("click", startDemoMode);
+  if (el.realMicBtn) el.realMicBtn.addEventListener("click", startMicAudio);
+  if (el.realMicTopBtn) el.realMicTopBtn.addEventListener("click", startMicAudio);
+
+  // ---- Auto-Bootstrap ----
+  resizeCanvas();
+  if (location.protocol === "http:" || location.protocol === "https:") {
+    el.apiUrlInput.value = location.origin;
+    startHttpMode("");
+  } else {
+    // Opened directly as local file on laptop -> expand connection bar and start demo
+    el.connPanel.open = true;
+    el.apiUrlInput.value = "http://192.168.4.1";
+    startDemoMode();
+  }
+})();
+</script>
+</body>
+</html>
+
+)rawliteral";
+
+#endif /* INDEX_HTML_H */
